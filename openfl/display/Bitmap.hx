@@ -15,25 +15,24 @@ import js.html.ImageElement;
 #end
 
 
-@:access(openfl.display.BitmapData)
 @:access(openfl.display.Graphics)
 @:access(openfl.geom.Rectangle)
 
 
 class Bitmap extends DisplayObject {
-	
-	
-	public var bitmapData:BitmapData;
+
+
+	public var bitmapData:IBitmapData;
 	public var pixelSnapping:PixelSnapping;
 	public var smoothing:Bool;
 	
 	#if (js && html5)
 	private var __image:ImageElement;
 	#end
-	
-	
-	public function new (bitmapData:BitmapData = null, pixelSnapping:PixelSnapping = null, smoothing:Bool = false) {
-		
+
+
+	public function new (bitmapData:IBitmapData = null, pixelSnapping:PixelSnapping = null, smoothing:Bool = false) {
+
 		super ();
 		
 		this.bitmapData = bitmapData;

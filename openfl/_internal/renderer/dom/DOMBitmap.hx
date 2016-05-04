@@ -11,7 +11,6 @@ import js.Browser;
 
 @:access(lime.graphics.ImageBuffer)
 @:access(openfl.display.Bitmap)
-@:access(openfl.display.BitmapData)
 
 
 class DOMBitmap {
@@ -20,7 +19,7 @@ class DOMBitmap {
 	public static inline function render (bitmap:Bitmap, renderSession:RenderSession):Void {
 		
 		#if (js && html5)
-		if (bitmap.stage != null && bitmap.__worldVisible && bitmap.__renderable && bitmap.bitmapData != null && bitmap.bitmapData.__isValid) {
+		if (bitmap.stage != null && bitmap.__worldVisible && bitmap.__renderable && bitmap.bitmapData != null && bitmap.bitmapData.isValid) {
 			
 			if (bitmap.bitmapData.image.buffer.__srcImage != null) {
 				
@@ -84,7 +83,7 @@ class DOMBitmap {
 			
 		}
 		
-		bitmap.bitmapData.__sync ();
+		@:privateAccess bitmap.bitmapData.__sync ();
 		
 		bitmap.__canvas.width = bitmap.bitmapData.width;
 		bitmap.__canvas.height = bitmap.bitmapData.height;

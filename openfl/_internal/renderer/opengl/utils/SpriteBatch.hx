@@ -6,6 +6,7 @@ import openfl._internal.renderer.opengl.shaders2.DefaultShader.DefAttrib;
 import openfl._internal.renderer.opengl.shaders2.DefaultShader.DefUniform;
 import openfl._internal.renderer.opengl.utils.VertexAttribute;
 import openfl._internal.renderer.RenderSession;
+import openfl.display.IBitmapData;
 import openfl.display.BitmapData;
 import openfl.display.DisplayObject;
 import openfl.display.PixelSnapping;
@@ -21,7 +22,6 @@ import openfl.gl.GLTexture;
 import openfl.display.BlendMode;
 import lime.utils.*;
 
-@:access(openfl.display.BitmapData)
 @:access(openfl.display.Graphics)
 @:access(openfl.display.DisplayObject)
 @:access(openfl.display.Tilesheet)
@@ -158,14 +158,14 @@ class SpriteBatch {
 	public function stop() {
 		flush();
 	}
-	
-	public inline function renderBitmapData(bitmapData:BitmapData, smoothing:Bool, matrix:Matrix, ct:ColorTransform, ?alpha:Float = 1, ?blendMode:BlendMode, ?flashShader:FlashShader, ?pixelSnapping:PixelSnapping) {
+
+	public inline function renderBitmapData(bitmapData:IBitmapData, smoothing:Bool, matrix:Matrix, ct:ColorTransform, ?alpha:Float = 1, ?blendMode:BlendMode, ?flashShader:FlashShader, ?pixelSnapping:PixelSnapping) {
 		if (bitmapData == null) return;
 
-		renderBitmapDataEx(bitmapData, bitmapData.width, bitmapData.height, bitmapData.__uvData, smoothing, matrix, ct, alpha, blendMode, flashShader, pixelSnapping);
+		renderBitmapDataEx(bitmapData, bitmapData.width, bitmapData.height, bitmapData.uvData, smoothing, matrix, ct, alpha, blendMode, flashShader, pixelSnapping);
 	}
 
-	public function renderBitmapDataEx(bitmapData:BitmapData, width:Float, height:Float, uvs:TextureUvs, smoothing:Bool, matrix:Matrix, ct:ColorTransform, alpha:Float, blendMode:BlendMode, flashShader:FlashShader, pixelSnapping:PixelSnapping) {
+	public function renderBitmapDataEx(bitmapData:IBitmapData, width:Float, height:Float, uvs:TextureUvs, smoothing:Bool, matrix:Matrix, ct:ColorTransform, alpha:Float, blendMode:BlendMode, flashShader:FlashShader, pixelSnapping:PixelSnapping) {
 		var texture = bitmapData.getTexture(gl);
 		
 		if (batchedSprites >= maxSprites) {
@@ -657,8 +657,8 @@ class SpriteBatch {
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 		
 	}
-	
-	inline function prepareShader(flashShader:FlashShader, ?bd:BitmapData) {
+
+	inline function prepareShader(flashShader:FlashShader, ?bd:IBitmapData) {
 		if (flashShader != null) {
 			flashShader.__init(this.gl);
 			flashShader.__shader.wrapS = flashShader.repeatX;
@@ -671,9 +671,9 @@ class SpriteBatch {
 			if (bd != null) {
 				objSize.value[0] = bd.width;
 				objSize.value[1] = bd.height;
-				if(bd.__pingPongTexture != null) {
-					texSize.value[0] = @:privateAccess bd.__pingPongTexture.renderTexture.__width;
-					texSize.value[1] = @:privateAccess bd.__pingPongTexture.renderTexture.__height;
+				if(bd.pingPongTexture != null) {
+					texSize.value[0] = @:privateAccess bd.pingPongTexture.renderTexture.__width;
+					texSize.value[1] = @:privateAccess bd.pingPongTexture.renderTexture.__height;
 				} else {
 					texSize.value[0] = bd.width;
 					texSize.value[1] = bd.height;

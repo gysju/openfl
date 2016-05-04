@@ -59,16 +59,19 @@ import js.Browser;
 @:autoBuild(openfl.Assets.embedBitmap())
 
 
-class BitmapData implements IBitmapDrawable {
+class BitmapData implements IBitmapDrawable implements IBitmapData {
 	
 	
 	private static var __isGLES:Null<Bool> = null;
 	
-	public var height (default, null):Int;
-	public var image (default, null):Image;
+	public var height (get,null):Int;
+	public var image (get, null):Image;
+	public var isValid (get, null):Bool;
+	public var pingPongTexture (get, null):PingPongTexture;
 	public var rect (default, null):Rectangle;
 	public var transparent (default, null):Bool;
-	public var width (default, null):Int;
+	public var uvData (get,null):TextureUvs;
+	public var width (get,null):Int;
 	
 	public var __worldTransform:Matrix;
 	public var __worldColorTransform:ColorTransform;
@@ -77,6 +80,8 @@ class BitmapData implements IBitmapDrawable {
 	private var __blendMode:BlendMode;
 	private var __shader:Shader;
 	private var __buffer:GLBuffer;
+	private var __height:Int;
+	private var __image:Image;
 	private var __isValid:Bool;
 	private var __surface:CairoSurface;
 	private var __texture:GLTexture;
@@ -84,6 +89,7 @@ class BitmapData implements IBitmapDrawable {
 	private var __pingPongTexture:PingPongTexture;
 	private var __usingPingPongTexture:Bool = false;
 	private var __uvData:TextureUvs;
+	private var __width:Int;
 	
 	
 	public function new (width:Int, height:Int, transparent:Bool = true, fillColor:UInt = 0xFFFFFFFF) {
@@ -98,8 +104,8 @@ class BitmapData implements IBitmapDrawable {
 		width = width < 0 ? 0 : width;
 		height = height < 0 ? 0 : height;
 		
-		this.width = width;
-		this.height = height;
+		__width = width;
+		__height = height;
 		rect = new Rectangle (0, 0, width, height);
 		
 		if (width > 0 && height > 0) {
@@ -125,18 +131,18 @@ class BitmapData implements IBitmapDrawable {
 			buffer.format = BGRA32;
 			buffer.premultiplied = true;
 			
-			image = new Image (buffer, 0, 0, width, height);
+			__image = new Image (buffer, 0, 0, width, height);
 			
 			if (fillColor != 0) {
 				
-				image.fillRect (image.rect, fillColor);
+				__image.fillRect (image.rect, fillColor);
 				
 			}
 			#else
-			image = new Image (null, 0, 0, width, height, fillColor);
+			__image = new Image (null, 0, 0, width, height, fillColor);
 			#end
 			
-			image.transparent = transparent;
+			__image.transparent = transparent;
 			__isValid = true;
 			
 		}
@@ -148,10 +154,33 @@ class BitmapData implements IBitmapDrawable {
 		
 	}
 	
-	
+	public function get_height():Int{
+		return __height;
+	}
+
+	public function get_image():Image{
+		return __image;
+	}
+
+	public function get_isValid():Bool{
+		return __isValid;
+	}
+
+	public function get_pingPongTexture():PingPongTexture{
+		return __pingPongTexture;
+	}
+
+	public function get_uvData():TextureUvs{
+		return __uvData;
+	}
+
+	public function get_width():Int{
+		return __width;
+	}
+
 	public function applyFilter (sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, filter:BitmapFilter):Void {
 		
-		if (!__isValid || sourceBitmapData == null || !sourceBitmapData.__isValid) return;
+		if (!__isValid || sourceBitmapData == null || !sourceBitmapData.isValid) return;
 		
 		#if (js && html5)
 		ImageCanvasUtil.convertToCanvas (image);
@@ -204,7 +233,7 @@ class BitmapData implements IBitmapDrawable {
 			
 			return -1;
 			
-		} else if (__isValid == false || otherBitmapData.__isValid == false) {
+		} else if (__isValid == false || otherBitmapData.isValid == false) {
 			
 			return -2;
 			
@@ -972,7 +1001,7 @@ class BitmapData implements IBitmapDrawable {
 	
 	public function merge (sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, redMultiplier:UInt, greenMultiplier:UInt, blueMultiplier:UInt, alphaMultiplier:UInt):Void {
 		
-		if (!__isValid || sourceBitmapData == null || !sourceBitmapData.__isValid || sourceRect == null || destPoint == null) return;
+		if (!__isValid || sourceBitmapData == null || !sourceBitmapData.isValid || sourceRect == null || destPoint == null) return;
 		image.merge (sourceBitmapData.image, sourceRect.__toLimeRectangle (), destPoint.__toLimeVector2 (), redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
 		__usingPingPongTexture = false;
 		
@@ -1271,15 +1300,15 @@ class BitmapData implements IBitmapDrawable {
 		
 		if (image != null && image.buffer != null) {
 			
-			this.image = image;
+			__image = image;
 			
-			width = image.width;
-			height = image.height;
+			__width = image.width;
+			__height = image.height;
 			rect = new Rectangle (0, 0, image.width, image.height);
 			
 			#if sys
-			image.format = BGRA32;
-			image.premultiplied = true;
+			__image.format = BGRA32;
+			__image.premultiplied = true;
 			#end
 			
 			__isValid = true;
@@ -1392,10 +1421,10 @@ class BitmapData implements IBitmapDrawable {
 	
 	function __resize (width:Int, height:Int) {
 		
-		this.width = width;
-		this.height = height;
-		this.rect.width = width;
-		this.rect.height = height;
+		__width = width;
+		__height = height;
+		rect.width = width;
+		rect.height = height;
 		
 	}
 	

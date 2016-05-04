@@ -114,7 +114,7 @@ class Shader {
 						case 4: gl.uniformMatrix4fv(u, param.transpose, new Float32Array(param.value));
 					}
 				case SAMPLER:
-					if (bd == null ||  @:privateAccess !bd.__isValid) continue;
+					if (bd == null ||  @:privateAccess !bd.isValid) continue;
 					gl.activeTexture(gl.TEXTURE0 + renderSession.activeTextures);
 					gl.bindTexture(gl.TEXTURE_2D, bd.getTexture(gl));
 					gl.uniform1i(u, renderSession.activeTextures);

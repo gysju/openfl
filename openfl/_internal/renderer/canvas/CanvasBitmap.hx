@@ -5,7 +5,6 @@ import openfl._internal.renderer.RenderSession;
 import openfl.display.Bitmap;
 
 @:access(openfl.display.Bitmap)
-@:access(openfl.display.BitmapData)
 
 
 class CanvasBitmap {
@@ -18,7 +17,7 @@ class CanvasBitmap {
 		
 		var context = renderSession.context;
 		
-		if (bitmap.bitmapData != null && bitmap.bitmapData.__isValid) {
+		if (bitmap.bitmapData != null && bitmap.bitmapData.isValid) {
 			
 			if (bitmap.__mask != null) {
 				
@@ -26,7 +25,7 @@ class CanvasBitmap {
 				
 			}
 			
-			bitmap.bitmapData.__sync ();
+			@:privateAccess bitmap.bitmapData.__sync ();
 			
 			context.globalAlpha = bitmap.__worldAlpha;
 			var transform = bitmap.__renderTransform;

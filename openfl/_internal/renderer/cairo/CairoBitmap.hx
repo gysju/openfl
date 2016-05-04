@@ -24,7 +24,7 @@ class CairoBitmap {
 		//var context = renderSession.context;
 		var cairo = renderSession.cairo;
 		
-		if (bitmap.bitmapData != null && bitmap.bitmapData.__isValid) {
+		if (bitmap.bitmapData != null && bitmap.bitmapData.isValid) {
 			
 			if (bitmap.__mask != null) {
 				

@@ -11,9 +11,9 @@ import openfl.utils.ByteArray;
 import openfl.utils.Object;
 
 
-extern class BitmapData implements IBitmapDrawable {
-	
-	
+extern class BitmapData implements IBitmapDrawable implements IBitmapData {
+
+
 	public var height (default, null):Int;
 	
 	public var image (get, never):Image;

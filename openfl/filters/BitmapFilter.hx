@@ -51,7 +51,7 @@ class BitmapFilter {
 	private static function __applyFilters (filters:Array<BitmapFilter>, renderSession:RenderSession, source:BitmapData, target:BitmapData, sourceRect:Rectangle, destPoint:Point) {
 		
 		var same = target == source && target.__usingPingPongTexture;
-		if (same) target.__pingPongTexture.useOldTexture = true;
+		if (same) target.pingPongTexture.useOldTexture = true;
 		
 		if (sourceRect == null) sourceRect = source.rect;
 		
@@ -65,21 +65,21 @@ class BitmapFilter {
 			
 			// if the filter needs the last filter output, swap and save a copy of it
 			if (filter.__saveLastFilter) {
-				target.__pingPongTexture.swap();
+				target.pingPongTexture.swap();
 				target.__drawGL(renderSession, source, sourceRect, true, !target.__usingPingPongTexture, true);
-				lastFilterOutput = target.__pingPongTexture.oldRenderTexture;
-				target.__pingPongTexture.oldRenderTexture = __tmpRenderTexture;
+				lastFilterOutput = target.pingPongTexture.oldRenderTexture;
+				target.pingPongTexture.oldRenderTexture = __tmpRenderTexture;
 			}
 			
 			for (pass in 0...filter.__passes) {
 				
 				useLastFilter = filter.__saveLastFilter && filter.__useLastFilter(pass);
 				
-				if (same && !useLastFilter) target.__pingPongTexture.swap();
+				if (same && !useLastFilter) target.pingPongTexture.swap();
 				
 				if (useLastFilter) {
-					__tmpRenderTexture = target.__pingPongTexture.oldRenderTexture;
-					target.__pingPongTexture.oldRenderTexture = lastFilterOutput;
+					__tmpRenderTexture = target.pingPongTexture.oldRenderTexture;
+					target.pingPongTexture.oldRenderTexture = lastFilterOutput;
 				}
 				
 				source.__shader = filter.__preparePass(pass);
@@ -90,7 +90,7 @@ class BitmapFilter {
 		
 		source.__shader = srcShader;
 		
-		if (same) target.__pingPongTexture.useOldTexture = false;
+		if (same) target.pingPongTexture.useOldTexture = false;
 		
 	}
 	

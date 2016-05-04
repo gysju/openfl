@@ -72,16 +72,19 @@ import js.html.CanvasElement;
  * it can only be 2,048 pixels high.) In Flash Player 9 and earlier, the limitation 
  * is 2,880 pixels in height and 2,880 in width.</p>
  */
-extern class BitmapData implements IBitmapDrawable {
-	
-	
+extern class BitmapData implements IBitmapDrawable implements IBitmapData {
+
+
 	/**
 	 * The height of the bitmap image in pixels.
 	 */
-	public var height (default, null):Int;
+	public var height (get, null):Int;
 	
 	public var image (get, never):Image;
 	
+	public var isValid (get, null):Bool;
+	public var pingPongTexture (get, null):PingPongTexture;
+
 	/**
 	 * The rectangle that defines the size and location of the bitmap image. The
 	 * top and left of the rectangle are 0; the width and height are equal to the
@@ -99,10 +102,12 @@ extern class BitmapData implements IBitmapDrawable {
 	 */
 	public var transparent (default, null):Bool;
 	
+	public var uvData (get,null):TextureUvs;
+
 	/**
 	 * The width of the bitmap image in pixels.
 	 */
-	public var width (default, null):Int;
+	public var width (get, null):Int;
 	
 	/**
 	 * Creates a BitmapData object with a specified width and height. If you specify a value for 
