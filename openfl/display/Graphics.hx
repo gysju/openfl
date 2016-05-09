@@ -78,10 +78,10 @@ import js.html.CanvasRenderingContext2D;
 	#else
 	private var __cairo:Cairo;
 	#end
-	
-	private var __bitmap:BitmapData;
-	
-	
+
+	private var __bitmap:IBitmapData;
+
+
 	private function new () {
 		
 		__commands = new DrawCommandBuffer ();
@@ -95,10 +95,10 @@ import js.html.CanvasRenderingContext2D;
 		#end
 		
 	}
-	
-	
-	public function beginBitmapFill (bitmap:BitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false) {
-		
+
+
+	public function beginBitmapFill (bitmap:IBitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false) {
+
 		__commands.beginBitmapFill(bitmap, matrix != null ? matrix.clone () : null, repeat, smooth);
 		
 		__visible = true;
@@ -745,10 +745,10 @@ import js.html.CanvasRenderingContext2D;
 		__commands.endFill();
 		
 	}
-	
-	
-	public function lineBitmapStyle (bitmap:BitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false):Void {
-		
+
+
+	public function lineBitmapStyle (bitmap:IBitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false):Void {
+
 		__commands.lineBitmapStyle (bitmap, matrix != null ? matrix.clone () : null, repeat, smooth);
 		
 	}

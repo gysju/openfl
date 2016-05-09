@@ -1,7 +1,7 @@
 package openfl._internal.renderer;
 
 
-import openfl.display.BitmapData;
+import openfl.display.IBitmapData;
 import openfl.display.CapsStyle;
 import openfl.display.GradientType;
 import openfl.display.GraphicsPathWinding;
@@ -85,10 +85,10 @@ class DrawCommandBuffer {
 		return other;
 		
 	}
-	
-	
-	public function beginBitmapFill(bitmap:BitmapData, matrix:Matrix, repeat:Bool, smooth:Bool):Void {
-		
+
+
+	public function beginBitmapFill(bitmap:IBitmapData, matrix:Matrix, repeat:Bool, smooth:Bool):Void {
+
 		types.push (BEGIN_BITMAP_FILL);
 		o.push (bitmap);
 		o.push (matrix);
@@ -268,10 +268,10 @@ class DrawCommandBuffer {
 		types.push (END_FILL);
 		
 	}
-	
-	
-	public function lineBitmapStyle (bitmap:BitmapData, matrix:Matrix, repeat:Bool, smooth:Bool):Void {
-		
+
+
+	public function lineBitmapStyle (bitmap:IBitmapData, matrix:Matrix, repeat:Bool, smooth:Bool):Void {
+
 		types.push (LINE_BITMAP_STYLE);
 		o.push (bitmap);
 		o.push (matrix);
