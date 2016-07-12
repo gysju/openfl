@@ -723,7 +723,7 @@ class TextEngine {
 
 				ascent = currentFormat.size * fontData.ascent;
 				descent = currentFormat.size * fontData.descent;
-				leading = currentFormat.leading / 20;
+				leading = currentFormat.leading;
 
 				heightValue = ascent + descent + leading;
 				
