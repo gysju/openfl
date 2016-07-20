@@ -799,6 +799,7 @@ class BitmapData implements IBitmapDrawable {
 
 				gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, (!textureImage.premultiplied && textureImage.transparent) ? 1 : 0 );
 
+				#if html5
 				var glCompatibleBuffer : Dynamic = textureImage.buffer.glCompatibleBuffer;
 
 				if( glCompatibleBuffer == null ){
@@ -807,6 +808,9 @@ class BitmapData implements IBitmapDrawable {
 
 					gl.texImage2D (gl.TEXTURE_2D, 0, internalFormat, format, gl.UNSIGNED_BYTE, glCompatibleBuffer);
 				}
+				#else
+					gl.texImage2D (gl.TEXTURE_2D, 0, internalFormat, width, height, 0, format, gl.UNSIGNED_BYTE, textureImage.data);
+				#end
 
 			#end
 			gl.bindTexture (gl.TEXTURE_2D, null);
