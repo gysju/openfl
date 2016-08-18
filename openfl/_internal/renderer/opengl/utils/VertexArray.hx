@@ -41,8 +41,11 @@ class VertexArray {
 	}
 	
 	public function destroy() {
-		gl.deleteBuffer(glBuffer);
-		buffer = null;
+		if ( gl != null )
+		{
+			gl.deleteBuffer(glBuffer);
+			buffer = null;	
+		}
 	}
 	
 	public function setContext(gl:GLRenderContext, view:ArrayBufferView) {
